@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
+import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
 
 /**
  * This servlet handles the edit requests. If the servlet receives parameters 
@@ -32,36 +33,43 @@ public class EditServlet extends HttpServlet {
      */
     private static final String EDIT_TOKEN_PARAMETER_NAME = "editToken";
     
-    /**
-     * The name of the attribute for the page type. The respective attribute is
-     * passed to page.jsp.
-     */
-    private static final String PAGE_TYPE_ATTRIBUTE_NAME = "pageType";
     
     /**
      * The value of the page type for viewing the edit page.
      */
     private static final String PAGE_TYPE_EDIT = "editPage";
     
-    /**
-     * The name of the attribute holding the document ID.
-     */
-    private static final String DOCUMENT_ID_ATTRIBUTE_NAME = "documentId";
     
     /**
-     * The name of the attribute holding the edit token.
+     * Contains all the attribute definitions this servlet relies on.
      */
-    private static final String EDIT_TOKEN_ATTRIBUTE_NAME = "editToken";
-    
-    /**
-     * The name of the attribute holding the document text.
-     */
-    private static final String DOCUMENT_TEXT_ATTRIBUTE_NAME = "documentText";
+    private static final class ATTRIBUTES {
+        
+        /**
+         * Holds the document ID.
+         */
+        private static final String DOCUMENT_ID = "documentId";
+        
+        /**
+         * Holds the edit token.
+         */
+        private static final String EDIT_TOKEN = "editToken";
+        
+        /**
+         * Holds the document text.
+         */
+        private static final String DOCUMENT_TEXT = "documentText";
+        
+        /**
+         * Holds the publish link.
+         */
+        private static final String PUBLISH_LINK = "publishLink";
+    }
     
     /**
      * The name of the JSP file implementing the document editor.
      */
-    private static final String EDITOR_JSP_PAGE = "page.jsp";
+    private static final String EDITOR_JSP_PAGE = "edit.jsp";
     
     @Override
     protected void doGet(HttpServletRequest request, 
@@ -93,11 +101,11 @@ public class EditServlet extends HttpServlet {
             return;
         }
         
-        request.setAttribute(PAGE_TYPE_ATTRIBUTE_NAME, PAGE_TYPE_EDIT);
-        request.setAttribute(DOCUMENT_ID_ATTRIBUTE_NAME, document.getId());
-        request.setAttribute(EDIT_TOKEN_ATTRIBUTE_NAME, 
-                             document.getEditToken());
-        request.setAttribute(DOCUMENT_TEXT_ATTRIBUTE_NAME, document.getText());
+        request.setAttribute(ATTRIBUTES.DOCUMENT_ID, document.getId());
+        request.setAttribute(ATTRIBUTES.EDIT_TOKEN, document.getEditToken());
+        request.setAttribute(ATTRIBUTES.DOCUMENT_TEXT, document.getText());
+        request.setAttribute(ATTRIBUTES.PUBLISH_LINK, getPublishLink(request, 
+                                                                     document));
         request.getRequestDispatcher(EDITOR_JSP_PAGE)
                .forward(request, response);
     }
@@ -109,6 +117,16 @@ public class EditServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.println("This servlet does not serve POST requests.");
         }
+    }
+    
+    private String getPublishLink(HttpServletRequest request, 
+                                  Document document) {
+        return new StringBuilder(getServerURL(request))
+                .append("/view?")
+                .append(ID_PARAMETER_NAME)
+                .append('=')
+                .append(document.getId())
+                .toString();
     }
     
     private void serveFreshEmptyDocument(HttpServletRequest request,

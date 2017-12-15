@@ -9,12 +9,22 @@ package net.coderodde.roddenotes.config;
 public final class Config {
     
     /**
-     * The name of the parameter holding the document ID.
+     * This class contains form parameter names.
      */
-    public static final String DOCUMENT_ID_PARAMETER = "documentId";
+    public static final class PARAMETERS {
+        
+        /**
+         * The name of the parameter holding the document ID.
+         */
+        public static final String DOCUMENT_ID = "documentId";
+        
+        /**
+         * The name of the parameter holding the edit token.
+         */
+        public static final String EDIT_TOKEN = "editToken";
+    }
     
-    /**
-     * The name of the parameter holding the edit token.
-     */
-    public static final String EDIT_TOKEN_PARAMETER = "editToken";
+    public static final class ATTRIBUTES {
+        
+    }
 }

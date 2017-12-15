@@ -10,3 +10,7 @@
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
             
+            function startTypesettingLoop() {
+                setInterval(function() {typeset();}, 5000);
+            }
+            

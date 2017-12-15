@@ -26,6 +26,7 @@
         </script>
     </head>
     <body>
+        yo!
         <c:choose>
             <c:when test="${pageType == "viewPage"}">
                 <%@include file="viewPage.jspf" %>

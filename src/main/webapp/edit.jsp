@@ -29,11 +29,11 @@
         <div id="page">
             <div id="documentContainer">
                 <p id="documentView" align="justify"></p>
-                <textarea id="editorTextArea" onkeypress="moveTextToDocument()">${documentText}</textarea>
+                <textarea id="editorTextArea" oninput="moveTextToDocument()">${documentText}</textarea>
                 <button id="typesetButton" onclick="typeset()">Typeset</button>
                 <div id="publishLink">
                     <div id="publishLinkLabel">Non-editable publish link:</div>
-                    <div id="publishLinkContent">${publishLink} rodde-notes.herokuapp.com/view?id=123</div>
+                    <div id="publishLinkContent">${publishLink}</div>
                 </div>
             </div>
 
@@ -50,5 +50,6 @@
                 Could not update the document.
             </div>
         </div>
+            <script>startTypesettingLoop();</script>
     </body>
 </html>

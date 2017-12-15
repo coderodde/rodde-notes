@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
+import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
 
 /**
  * This servlet listens to the root resource of this application, creates a new
@@ -72,11 +73,5 @@ public class HomeServlet extends HttpServlet {
                    .append('=')
                    .append(document.getEditToken())
                    .toString();
-    }
-    
-    private String getServerURL(HttpServletRequest request) {
-        String url = request.getRequestURL().toString();
-        int lastSlashIndex = url.lastIndexOf('/');
-        return url.substring(0, lastSlashIndex);
     }
 }
