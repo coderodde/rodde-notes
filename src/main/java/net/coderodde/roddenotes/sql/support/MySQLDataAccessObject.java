@@ -57,7 +57,6 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
             
-            
             try (PreparedStatement statement = 
                     connection.prepareStatement(MySQLDefinitions.SELECT.DOCUMENT.VIA_DOCUMENT_ID)) {
                 
@@ -72,9 +71,15 @@ public final class MySQLDataAccessObject implements DataAccessObject {
                     }
                 }
                 
+            }
+            
+            try (PreparedStatement statement = 
+                    connection.prepareStatement(
+                            MySQLDefinitions.INSERT.DOCUMENT)) {
+                
                 statement.setString(1, id);
                 statement.setString(2, editToken);
-                statement.setString(3, ""); // Document text.
+                statement.setString(3, ""); // Note the empty text.
                 
                 statement.executeUpdate();
             }
