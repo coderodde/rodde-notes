@@ -47,7 +47,8 @@ public class ViewServlet extends HttpServlet {
         if (document == null) {
             request.setAttribute(Config.ATTRIBUTES.DOCUMENT_ID,
                                  documentId);
-            request.getRequestDispatcher(Config.PAGES.NO_DOCUMENT_PAGE);
+            request.getRequestDispatcher(Config.PAGES.NO_DOCUMENT_PAGE)
+                   .forward(request, response);
             return;
         }
         

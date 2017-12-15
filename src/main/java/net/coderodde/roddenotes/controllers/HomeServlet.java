@@ -20,7 +20,7 @@ import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
  * @author Rodion "rodde" Efremov
  * @version 1.6 (Dec 15, 2017)
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/"})
+@WebServlet(name = "HomeServlet", urlPatterns = {""})
 public class HomeServlet extends HttpServlet {
 
     private static final String EDIT_SERVLET_NAME = "edit";
@@ -34,7 +34,10 @@ public class HomeServlet extends HttpServlet {
             out.println("getPathInfo(): " + request.getPathInfo());
             out.println("getRequestURI(): " + request.getRequestURI());
             out.println("getRequestURL(): " + request.getRequestURL());
-            
+            out.println(request.getPathTranslated());
+            out.println(request.getQueryString());
+            out.println(request.getServletPath());
+            out.println();
         }
         
 //        Document document = null;
