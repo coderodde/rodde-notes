@@ -21,6 +21,15 @@ import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
 @WebServlet(name = "HomeServlet", urlPatterns = {"/"})
 public class HomeServlet extends HttpServlet {
 
+    private static final class PARAMETERS {
+        
+        private static final String DOCUMENT_ID = "documentId";
+        private static final String EDIT_TOKEN = "editToken";
+        private static final String DOCUMENT_TEXT = "documentText";
+    }
+    
+    private static final String EDIT_SERVLET_NAME = "edit";
+    
     @Override
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response)
@@ -33,7 +42,11 @@ public class HomeServlet extends HttpServlet {
             throw new RuntimeException(ex);
         }
         
+        if (document == null) {
+            throw new NullPointerException("Creating a document failed.");
+        }
         
+        response.sendRedirect(getEditPageAddress(request, document));
     }
 
     @Override
@@ -42,5 +55,28 @@ public class HomeServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print("Please access this resource via GET method.");
         }
+    }
+    
+    private String getEditPageAddress(HttpServletRequest request,
+                                      Document document) {
+        return new StringBuilder()
+                   .append(getServerURL(request))
+                   .append('/')
+                   .append(EDIT_SERVLET_NAME)
+                   .append('?')
+                   .append(PARAMETERS.DOCUMENT_ID)
+                   .append('=')
+                   .append(document.getId())
+                   .append('&')
+                   .append(PARAMETERS.EDIT_TOKEN)
+                   .append('=')
+                   .append(document.getEditToken())
+                   .toString();
+    }
+    
+    private String getServerURL(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        int lastSlashIndex = url.lastIndexOf('/');
+        return url.substring(0, lastSlashIndex);
     }
 }
