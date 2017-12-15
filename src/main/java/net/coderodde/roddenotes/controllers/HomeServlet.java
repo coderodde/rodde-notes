@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.coderodde.roddenotes.config.Config;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
 import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
@@ -22,32 +23,33 @@ import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
 @WebServlet(name = "HomeServlet", urlPatterns = {"/"})
 public class HomeServlet extends HttpServlet {
 
-    private static final class PARAMETERS {
-        
-        private static final String DOCUMENT_ID = "documentId";
-        private static final String EDIT_TOKEN = "editToken";
-        private static final String DOCUMENT_TEXT = "documentText";
-    }
-    
     private static final String EDIT_SERVLET_NAME = "edit";
     
     @Override
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response)
             throws ServletException, IOException {
-        Document document = null;
-        
-        try {
-            document = MySQLDataAccessObject.INSTANCE.createNewDocument();         
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        try (PrintWriter out = response.getWriter()) {
+            out.println("getContextPath(): " + request.getContextPath());
+            out.println("getPathInfo(): " + request.getPathInfo());
+            out.println("getRequestURI(): " + request.getRequestURI());
+            out.println("getRequestURL(): " + request.getRequestURL());
+            
         }
         
-        if (document == null) {
-            throw new NullPointerException("Creating a document failed.");
-        }
-        
-        response.sendRedirect(getEditPageAddress(request, document));
+//        Document document = null;
+//        
+//        try {
+//            document = MySQLDataAccessObject.INSTANCE.createNewDocument();         
+//        } catch (SQLException ex) {
+//            throw new RuntimeException(ex);
+//        }
+//        
+//        if (document == null) {
+//            throw new NullPointerException("Creating a document failed.");
+//        }
+//        
+//        response.sendRedirect(getEditPageAddress(request, document));
     }
 
     @Override
@@ -65,11 +67,11 @@ public class HomeServlet extends HttpServlet {
                    .append('/')
                    .append(EDIT_SERVLET_NAME)
                    .append('?')
-                   .append(PARAMETERS.DOCUMENT_ID)
+                   .append(Config.PARAMETERS.DOCUMENT_ID)
                    .append('=')
                    .append(document.getId())
                    .append('&')
-                   .append(PARAMETERS.EDIT_TOKEN)
+                   .append(Config.PARAMETERS.EDIT_TOKEN)
                    .append('=')
                    .append(document.getEditToken())
                    .toString();

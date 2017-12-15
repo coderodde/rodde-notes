@@ -5,12 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>rodde-notes</title>
         <style>
-            <%@include file="styles.css" %>
+            .errorMessageContainer {
+                text-align: center;
+                color: red;
+            }
         </style>
     </head>
     <body>
-        <div id="view">
-            <p id="text">${documentText}</p>
-        </div>
+        <p class="errorMessageContainer">Error: no document with ID ${documentId}.</p>
     </body>
 </html>

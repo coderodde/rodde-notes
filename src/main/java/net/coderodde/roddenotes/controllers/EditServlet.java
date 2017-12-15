@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.coderodde.roddenotes.config.Config;
+import net.coderodde.roddenotes.config.Config.ATTRIBUTES;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
 import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
@@ -22,61 +24,13 @@ import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
  */
 @WebServlet(name = "EditServlet", urlPatterns = {"/edit"})
 public class EditServlet extends HttpServlet {
-
-    /**
-     * The name of the parameter holding the document ID.
-     */
-    private static final String ID_PARAMETER_NAME = "documentId";
-    
-    /**
-     * The name of the parameter holding the edit token.
-     */
-    private static final String EDIT_TOKEN_PARAMETER_NAME = "editToken";
-    
-    
-    /**
-     * The value of the page type for viewing the edit page.
-     */
-    private static final String PAGE_TYPE_EDIT = "editPage";
-    
-    
-    /**
-     * Contains all the attribute definitions this servlet relies on.
-     */
-    private static final class ATTRIBUTES {
-        
-        /**
-         * Holds the document ID.
-         */
-        private static final String DOCUMENT_ID = "documentId";
-        
-        /**
-         * Holds the edit token.
-         */
-        private static final String EDIT_TOKEN = "editToken";
-        
-        /**
-         * Holds the document text.
-         */
-        private static final String DOCUMENT_TEXT = "documentText";
-        
-        /**
-         * Holds the publish link.
-         */
-        private static final String PUBLISH_LINK = "publishLink";
-    }
-    
-    /**
-     * The name of the JSP file implementing the document editor.
-     */
-    private static final String EDITOR_JSP_PAGE = "edit.jsp";
     
     @Override
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter(ID_PARAMETER_NAME);
-        String editToken = request.getParameter(EDIT_TOKEN_PARAMETER_NAME);
+        String id = request.getParameter(Config.PARAMETERS.DOCUMENT_ID);
+        String editToken = request.getParameter(Config.PARAMETERS.EDIT_TOKEN);
         
         if (id == null || editToken == null) {
             serveFreshEmptyDocument(request, response);
@@ -104,9 +58,10 @@ public class EditServlet extends HttpServlet {
         request.setAttribute(ATTRIBUTES.DOCUMENT_ID, document.getId());
         request.setAttribute(ATTRIBUTES.EDIT_TOKEN, document.getEditToken());
         request.setAttribute(ATTRIBUTES.DOCUMENT_TEXT, document.getText());
-        request.setAttribute(ATTRIBUTES.PUBLISH_LINK, getPublishLink(request, 
-                                                                     document));
-        request.getRequestDispatcher(EDITOR_JSP_PAGE)
+        request.setAttribute(ATTRIBUTES.PUBLISH_LINK, 
+                             getPublishLink(request, document));
+        
+        request.getRequestDispatcher(Config.PAGES.EDITOR_PAGE)
                .forward(request, response);
     }
 
@@ -123,7 +78,7 @@ public class EditServlet extends HttpServlet {
                                   Document document) {
         return new StringBuilder(getServerURL(request))
                 .append("/view?")
-                .append(ID_PARAMETER_NAME)
+                .append(Config.PARAMETERS.DOCUMENT_ID)
                 .append('=')
                 .append(document.getId())
                 .toString();
@@ -147,11 +102,11 @@ public class EditServlet extends HttpServlet {
     private String getPath(HttpServletRequest request, Document document) {
         return new StringBuilder().append(request.getPathInfo())
                                   .append('?')
-                                  .append(ID_PARAMETER_NAME)
+                                  .append(Config.PARAMETERS.DOCUMENT_ID)
                                   .append('=')
                                   .append(document.getId())
                                   .append('&')
-                                  .append(EDIT_TOKEN_PARAMETER_NAME)
+                                  .append(Config.PARAMETERS.EDIT_TOKEN)
                                   .append('=')
                                   .append(document.getEditToken())
                                   .toString();

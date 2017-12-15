@@ -25,11 +25,12 @@ public class ViewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response)
             throws ServletException, IOException {
-        String documentIdParameter = 
+        String documentId = 
                 request.getParameter(Config.PARAMETERS.DOCUMENT_ID);
         
-        if (documentIdParameter == null) {
-            // TODO: show no doc page.
+        if (documentId == null) {
+            request.getRequestDispatcher(Config.PAGES.NO_ID_VIEW_PAGE)
+                   .forward(request, response);
             return;
         }
         
@@ -38,17 +39,22 @@ public class ViewServlet extends HttpServlet {
         try {
             document = MySQLDataAccessObject
                         .INSTANCE
-                        .getDocument(documentIdParameter);
+                        .getDocument(documentId);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
         
         if (document == null) {
-            // TODO: show no doc page.
+            request.setAttribute(Config.ATTRIBUTES.DOCUMENT_ID,
+                                 documentId);
+            request.getRequestDispatcher(Config.PAGES.NO_DOCUMENT_PAGE);
             return;
         }
         
-        
+        request.setAttribute(Config.ATTRIBUTES.DOCUMENT_TEXT, 
+                             document.getText()); 
+        request.getRequestDispatcher(Config.PAGES.VIEW_PAGE)
+               .forward(request, response);
     }
 
     @Override
