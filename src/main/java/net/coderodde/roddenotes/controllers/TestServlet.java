@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author rodionefremov
  */
-@WebServlet(name = "TestServlet", urlPatterns = {"/"})
+@WebServlet(name = "TestServlet", urlPatterns = {"/fds"})
 public class TestServlet extends HttpServlet {
     
     private static final String PAGE_TYPE_STRING = "pageType";

@@ -12,11 +12,15 @@
         <textarea id="editorTextArea" onkeypress="moveTextToDocument()"></textarea>
         <button id="typesetButton" onclick="typeset()">Typeset</button>
         <div id="publishLink">
-            <div id="publishLinkLabel">Non-editable publish link</div>
+            <div id="publishLinkLabel">Non-editable publish link:</div>
             <div id="publishLinkContent">${publishLink} rodde-notes.herokuapp.com/view?id=123</div>
         </div>
     </div>
     
+        <form id="dataForm">
+            <input type="hidden" value="${documentId}" id="documentId" />
+            <input type="hidden" value="${editToken}" id="editToken" />
+        </form>
     <script>
 //        $("#savedFailed").fadeOut();
     </script>
