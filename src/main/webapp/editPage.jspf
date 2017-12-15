@@ -1,0 +1,24 @@
+<div id="page">
+    <div id ="savedSuccessful" class="topNotifications">
+        The document is updated.
+    </div>
+    
+    <div id="savedFailed" class="topNotifications">
+        Could not update the document.
+    </div>
+    
+    <div id="documentContainer">
+        <p id="documentView" align="justify"></p>
+        <textarea id="editorTextArea" onkeypress="moveTextToDocument()"></textarea>
+        <button id="typesetButton" onclick="typeset()">Typeset</button>
+        <div id="publishLink">
+            <div id="publishLinkLabel">Non-editable publish link</div>
+            <div id="publishLinkContent">${publishLink} rodde-notes.herokuapp.com/view?id=123</div>
+        </div>
+    </div>
+    
+    <script>
+//        $("#savedFailed").fadeOut();
+    </script>
+</div>
+

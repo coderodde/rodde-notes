@@ -1,0 +1,96 @@
+<%-- We indent this code so that when it ends up in a response HTML document
+     the document seems properly indented. --%>
+            #page {
+                width: 800px;  
+                margin: auto;
+            }  
+
+            .topNotifications {
+                width: 800px;
+                text-align: center;
+                vertical-align: central;
+                border-width: 2px;
+                border-style: solid;
+                margin: 0;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                font-family: sans-serif;
+                font-size: 15px;
+                margin-bottom: 1px;
+            }
+
+            #savedSuccessful {
+                border-color: darkgreen;
+                background-color: lightgreen;
+                color: darkgreen;
+            }
+
+            #savedFailed {
+                border-color: red;
+                background-color: pink;
+                color: red;
+            }
+            
+            #documentContainer {
+                width: 100%;
+            }
+            
+            #documentView {
+                width: 100%;
+            }
+            
+            #editorTextArea {
+                width: 100%;
+                border-width: 2px;
+                height: 200px;
+                margin: 0;
+                padding: 0;
+                resize: none;
+            }
+            
+            #typesetButton {
+                width: 100%;
+                border-width: 2px;
+                height: 30px;
+                font-family: sans-serif;
+                font-size: 15px;
+            }
+            
+            #publishLink {
+                width: 100%;
+                border: 2px solid blue;
+                background-color: lightblue;
+                color: blue;
+                margin: 0;
+                margin-top: 3px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding-left: 10px;
+                padding-right: 10px;
+                font-family: sans-serif;
+                font-size: 15px;
+                display: inline-block;
+                box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  -webkit-box-sizing: border-box;
+                text-align: left;
+                overflow: hidden;
+            }
+
+            #publishLinkLabel {
+                float: left;
+                font-family: sans-serf;
+                font-size: 20px;
+                padding-right: 15px;
+            }
+            
+            #publishLinkContent {
+                float: left;
+                background-color: white;
+                color: gray;
+                font-family: monospace;
+                font-size: 20px;
+                padding: 3px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
