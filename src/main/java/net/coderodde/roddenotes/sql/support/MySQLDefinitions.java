@@ -1,4 +1,4 @@
-package net.coderodde.sql.support;
+package net.coderodde.roddenotes.sql.support;
 
 /**
  * This class defines all the data regarding the database schema for the 

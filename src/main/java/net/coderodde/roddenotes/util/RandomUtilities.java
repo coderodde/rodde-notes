@@ -1,7 +1,7 @@
-package net.coderodde.util;
+package net.coderodde.roddenotes.util;
 
 import java.util.concurrent.ThreadLocalRandom;
-import net.coderodde.sql.support.MySQLDefinitions;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions;
 
 /**
  * This class provides various utilities for dealing with random strings.

@@ -1,4 +1,4 @@
-package net.coderodde.sql.support;
+package net.coderodde.roddenotes.sql.support;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -7,10 +7,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import net.coderodde.roddenotes.model.Document;
-import net.coderodde.sql.DataAccessObject;
-import net.coderodde.sql.support.MySQLDefinitions.DOCUMENT_TABLE;
-import net.coderodde.util.RandomUtilities;
+import net.coderodde.roddenotes.sql.DataAccessObject;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions.DOCUMENT_TABLE;
+import net.coderodde.roddenotes.util.RandomUtilities;
 
 /**
  * This class implements a data access object over a MySQL database.
@@ -27,6 +28,12 @@ public final class MySQLDataAccessObject implements DataAccessObject {
     private static final String DATABASE_URI_ENVIRONMENT_VARIABLE = 
             "RODDE_NOTES_DB_URI";
     
+    /**
+     * The only instance of this class.
+     */
+    public static final MySQLDataAccessObject INSTANCE =
+            new MySQLDataAccessObject();
+    
     static {
         try {
             // Attempts to load the driver.
@@ -36,6 +43,8 @@ public final class MySQLDataAccessObject implements DataAccessObject {
                                        ex);
         }
     }
+    
+    private MySQLDataAccessObject() {}
     
     /**
      * {@inheritDoc } 
@@ -78,6 +87,39 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         document.setEditToken(editToken);
         document.setText(""); // Note the empty text.
         return document;
+    }
+
+    @Override
+    public Document getDocument(String id) throws SQLException {
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement statement = 
+                    connection.prepareStatement(MySQLDefinitions
+                                    .SELECT
+                                    .DOCUMENT
+                                    .VIA_DOCUMENT_ID)) {
+                statement.setString(1, id);
+                
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (!resultSet.next()) {
+                        return null;
+                    }
+                    
+                    Document document = new Document();
+                    document.setId(
+                            resultSet.getString(DOCUMENT_TABLE.ID_COLUMN.NAME));
+                    
+                    document.setEditToken(
+                            resultSet.getString(
+                                    DOCUMENT_TABLE.EDIT_TOKEN_COLUMN.NAME));
+                    
+                    document.setText(
+                            resultSet.getString(
+                                    DOCUMENT_TABLE.TEXT_COLUMN.NAME));
+                    
+                    return document;
+                }
+            }
+        }
     }
 
     /**
@@ -132,5 +174,14 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         String password = tokens[1];
         String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
         return DriverManager.getConnection(dbUrl, username, password);
+    }
+
+    @Override
+    public void initializeDatabaseTables() throws SQLException {
+        try (Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(DOCUMENT_TABLE.CREATE_STATEMENT);
+            }
+        }
     }
 }

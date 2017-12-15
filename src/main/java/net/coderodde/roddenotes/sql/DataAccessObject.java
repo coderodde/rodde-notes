@@ -1,4 +1,4 @@
-package net.coderodde.sql;
+package net.coderodde.roddenotes.sql;
 
 import java.sql.SQLException;
 import net.coderodde.roddenotes.model.Document;
@@ -31,4 +31,21 @@ public interface DataAccessObject {
      */
     public Document getDocument(String id, String editToken) 
             throws SQLException;
+    
+    /**
+     * Reads a document with given ID.
+     * 
+     * @param id the ID of the desired document.
+     * @return the document with the given ID or {@code null} if there is no 
+     *         such.
+     * @throws SQLException if the SQL layer fails.
+     */
+    public Document getDocument(String id) throws SQLException;
+    
+    /**
+     * Makes sure all the tables are created in the database.
+     * 
+     * @throws SQLException if the SQL layer fails.
+     */
+    public void initializeDatabaseTables() throws SQLException;
 }
