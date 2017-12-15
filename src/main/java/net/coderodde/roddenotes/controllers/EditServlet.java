@@ -54,6 +54,11 @@ public class EditServlet extends HttpServlet {
     private static final String EDIT_TOKEN_ATTRIBUTE_NAME = "editToken";
     
     /**
+     * The name of the attribute holding the document text.
+     */
+    private static final String DOCUMENT_TEXT_ATTRIBUTE_NAME = "documentText";
+    
+    /**
      * The name of the JSP file implementing the document editor.
      */
     private static final String EDITOR_JSP_PAGE = "page.jsp";
@@ -66,7 +71,7 @@ public class EditServlet extends HttpServlet {
         String editToken = request.getParameter(EDIT_TOKEN_PARAMETER_NAME);
         
         if (id == null || editToken == null) {
-            // TODO: create a new document and redirect to it.
+            serveFreshEmptyDocument(request, response);
             return;
         }
         
@@ -79,12 +84,12 @@ public class EditServlet extends HttpServlet {
         }
         
         if (document == null) {
-            // TODO: create a new document and redirect to it.
+            serveFreshEmptyDocument(request, response);
             return;
         }
         
         if (!document.getEditToken().equals(editToken)) {
-            // TODO: create a new document and redirect to it.
+            serveFreshEmptyDocument(request, response);
             return;
         }
         
@@ -92,6 +97,7 @@ public class EditServlet extends HttpServlet {
         request.setAttribute(DOCUMENT_ID_ATTRIBUTE_NAME, document.getId());
         request.setAttribute(EDIT_TOKEN_ATTRIBUTE_NAME, 
                              document.getEditToken());
+        request.setAttribute(DOCUMENT_TEXT_ATTRIBUTE_NAME, document.getText());
         request.getRequestDispatcher(EDITOR_JSP_PAGE)
                .forward(request, response);
     }
@@ -103,5 +109,33 @@ public class EditServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.println("This servlet does not serve POST requests.");
         }
+    }
+    
+    private void serveFreshEmptyDocument(HttpServletRequest request,
+                                         HttpServletResponse response)
+    throws ServletException, IOException {
+        Document document = null;
+        
+        try {
+            document = MySQLDataAccessObject.INSTANCE.createNewDocument();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        String path = getPath(request, document);
+        request.getRequestDispatcher(path).forward(request, response);
+    }
+    
+    private String getPath(HttpServletRequest request, Document document) {
+        return new StringBuilder().append(request.getPathInfo())
+                                  .append('?')
+                                  .append(ID_PARAMETER_NAME)
+                                  .append('=')
+                                  .append(document.getId())
+                                  .append('&')
+                                  .append(EDIT_TOKEN_PARAMETER_NAME)
+                                  .append('=')
+                                  .append(document.getEditToken())
+                                  .toString();
     }
 }
