@@ -33,6 +33,14 @@
 
     <body>
         <div id="page">
+            <div id ="savedSuccessful" class="topNotifications">
+                The document is updated.
+            </div>
+
+            <div id="savedFailed" class="topNotifications">
+                Could not update the document.
+            </div>
+            
             <div id="documentContainer">
                 <p id="documentView" align="justify"></p>
                 <textarea id="editorTextArea" oninput="moveTextToDocument()">${documentText}</textarea>
@@ -54,18 +62,11 @@
                 <input type="text" id="idField" name="documentId"/>
                 <button type="submit">Delete</button>
             </form>
-
-            <div id ="savedSuccessful" class="topNotifications">
-                The document is updated.
-            </div>
-
-            <div id="savedFailed" class="topNotifications">
-                Could not update the document.
-            </div>
         </div>
 
         <script>
             startTypesettingLoop();
+            startSaveLoop();
             moveTextToDocument();
         </script>
     </body>

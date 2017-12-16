@@ -26,6 +26,10 @@
                 setInterval(function() {typeset();}, 5000);
             }
             
+            function startSaveLoop() {
+                setInterval(function() {save();}, 10000);
+            }
+            
             function save() {
                 var documentId = 
                         document.getElementById(
@@ -38,6 +42,8 @@
                 var documentText = 
                         document.getElementById(
                         RoddeNotes.Parameters.EDITOR_TEXT_AREA).value;
+                documentText = encodeURIComponent(documentText);
+                console.log(documentText);
                 
                 var xhr = new XMLHttpRequest();
                 
