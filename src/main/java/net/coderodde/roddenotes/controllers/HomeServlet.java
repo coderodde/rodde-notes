@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.coderodde.roddenotes.config.Config;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
-import static net.coderodde.roddenotes.util.MiscellaneousUtilities.getServerURL;
 
 /**
  * This servlet listens to the root resource of this application, creates a new
@@ -29,30 +28,19 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response)
             throws ServletException, IOException {
-        try (PrintWriter out = response.getWriter()) {
-            out.println("getContextPath(): " + request.getContextPath());
-            out.println("getPathInfo(): " + request.getPathInfo());
-            out.println("getRequestURI(): " + request.getRequestURI());
-            out.println("getRequestURL(): " + request.getRequestURL());
-            out.println(request.getPathTranslated());
-            out.println(request.getQueryString());
-            out.println(request.getServletPath());
-            out.println();
+        Document document = null;
+        
+        try {
+            document = MySQLDataAccessObject.INSTANCE.createNewDocument();         
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
         
-//        Document document = null;
-//        
-//        try {
-//            document = MySQLDataAccessObject.INSTANCE.createNewDocument();         
-//        } catch (SQLException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        
-//        if (document == null) {
-//            throw new NullPointerException("Creating a document failed.");
-//        }
-//        
-//        response.sendRedirect(getEditPageAddress(request, document));
+        if (document == null) {
+            throw new NullPointerException("Creating a document failed.");
+        }
+        
+        response.sendRedirect(getEditPageAddress(document));
     }
 
     @Override
@@ -63,11 +51,14 @@ public class HomeServlet extends HttpServlet {
         }
     }
     
-    private String getEditPageAddress(HttpServletRequest request,
-                                      Document document) {
+    /**
+     * Constructs the address for the edit page.
+     * 
+     * @param document the document to prepare for editing.
+     * @return a page address relative to the web application.
+     */
+    private String getEditPageAddress(Document document) {
         return new StringBuilder()
-                   .append(getServerURL(request))
-                   .append('/')
                    .append(EDIT_SERVLET_NAME)
                    .append('?')
                    .append(Config.PARAMETERS.DOCUMENT_ID)

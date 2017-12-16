@@ -17,6 +17,7 @@ public final class MiscellaneousUtilities {
      * @return an URL.
      */
     public static String getServerURL(HttpServletRequest request) {
+//        String url = request.getServerName() + request.getContextPath() + request.getPathInfo();
         String url = request.getRequestURL().toString();
         int lastSlashIndex = url.lastIndexOf('/');
         return url.substring(0, lastSlashIndex);

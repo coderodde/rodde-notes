@@ -22,6 +22,11 @@ public final class Config {
          * The name of the parameter holding the edit token.
          */
         public static final String EDIT_TOKEN = "editToken";
+        
+        /**
+         * The name of the parameter holding the document text.
+         */
+        public static final String DOCUMENT_TEXT = "documentText";
     }
     
     /**
@@ -72,6 +77,12 @@ public final class Config {
          * document ID parameter.
          */
         public static final String NO_ID_VIEW_PAGE = "viewIdNotGiven.html";
+        
+        /**
+         * The name of the HTML file rendered whenever receiving a request where
+         * the document ID and the edit token do not match.
+         */
+        public static final String DONT_HACK_US_PAGE = "dontHackUs.html";
     }
     
     /**
@@ -111,5 +122,11 @@ public final class Config {
                 SPAN_BEGIN + 
                 "(Cannot find a document without an ID.)" +
                 SPAN_END;
+    }
+    
+    public static final class STATUS_MESSAGES {
+        
+        public static final String SUCCESS = "success";
+        public static final String FAILURE = "faiure";
     }
 }

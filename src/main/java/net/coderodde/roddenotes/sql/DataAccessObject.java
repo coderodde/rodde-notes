@@ -43,6 +43,17 @@ public interface DataAccessObject {
     public Document getDocument(String id) throws SQLException;
     
     /**
+     * Saves the document. If the document is not yet present in the database,
+     * it is inserted. Otherwise, its state is updated.
+     * 
+     * @param document the document to update.
+     * @return {@code true} if the ID and editToken match each other. 
+     *         {@code false} otherwise.
+     * @throws SQLException if the SQL layer fails.
+     */
+    public boolean updateDocument(Document document) throws SQLException;
+    
+    /**
      * Makes sure all the tables are created in the database.
      * 
      * @throws SQLException if the SQL layer fails.

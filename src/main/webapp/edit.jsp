@@ -30,7 +30,8 @@
             <div id="documentContainer">
                 <p id="documentView" align="justify"></p>
                 <textarea id="editorTextArea" oninput="moveTextToDocument()">${documentText}</textarea>
-                <button id="typesetButton" onclick="typeset()">Typeset</button>
+                <button id="typesetButton" onclick="typeset()">Typeset!</button>
+                <button id="saveButton" onclick="save()">Save!</button>
                 <div id="publishLink">
                     <div id="publishLinkLabel">Non-editable publish link:</div>
                     <div id="publishLinkContent">${publishLink}</div>
@@ -50,6 +51,7 @@
                 Could not update the document.
             </div>
         </div>
-            <script>startTypesettingLoop();</script>
+            
+        <script>startTypesettingLoop();</script>
     </body>
 </html>

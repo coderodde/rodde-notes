@@ -5,8 +5,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>rodde-notes</title>
         <style>
-            <%@include file="styles.css" %>
+            #view {
+                width: 800px;
+                margin: auto;
+            }
+            
+            #text {
+                text-align: justify;
+            }
         </style>
+        
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\[','\\]']]}});
+        </script>
     </head>
     <body>
         <div id="view">

@@ -11,6 +11,9 @@ import java.sql.Statement;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.DataAccessObject;
 import net.coderodde.roddenotes.sql.support.MySQLDefinitions.DOCUMENT_TABLE;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions.INSERT;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions.SELECT;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions.UPDATE;
 import net.coderodde.roddenotes.util.RandomUtilities;
 
 /**
@@ -94,6 +97,9 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         return document;
     }
 
+    /**
+     * {@inheritDoc } 
+     */
     @Override
     public Document getDocument(String id) throws SQLException {
         try (Connection connection = getConnection()) {
@@ -181,6 +187,9 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
+    /**
+     * {@inheritDoc } 
+     */
     @Override
     public void initializeDatabaseTables() throws SQLException {
         try (Connection connection = getConnection()) {
@@ -188,5 +197,46 @@ public final class MySQLDataAccessObject implements DataAccessObject {
                 statement.executeUpdate(DOCUMENT_TABLE.CREATE_STATEMENT);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc } 
+     */
+    @Override
+    public boolean updateDocument(Document document) throws SQLException {
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement statement = 
+                    connection.prepareStatement(
+                            SELECT.DOCUMENT.VIA_DOCUMENT_ID)) {
+                statement.setString(1, document.getId());
+                
+                try (ResultSet resultSet = statement.executeQuery()) {
+                   if (!resultSet.next()) {
+                       return false;
+                   }
+                   
+                   String editToken = 
+                           resultSet.getString(
+                                   DOCUMENT_TABLE.EDIT_TOKEN_COLUMN.NAME);
+                   
+                   if (!editToken.equals(document.getEditToken())) {
+                       return false;
+                   }
+                }
+            }
+            
+            try (PreparedStatement statement = 
+                    connection.prepareStatement(UPDATE.DOCUMENT.VIA_DOCUMENT_ID)) {
+                statement.setString(1, document.getText());
+                statement.setString(2, document.getId());
+                statement.executeUpdate();
+            }
+            
+            connection.commit();
+        }
+        
+        return true;
     }
 }
