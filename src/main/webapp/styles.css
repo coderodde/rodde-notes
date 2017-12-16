@@ -47,6 +47,8 @@
                 margin: 0;
                 padding: 0;
                 resize: none;
+                font-family: monospace;
+                font-size: 11pt;
             }
             
             .button {

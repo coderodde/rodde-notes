@@ -33,16 +33,8 @@
 
     <body>
         <div id="page">
-            <div id ="savedSuccessful" class="topNotifications">
-                The document is updated.
-            </div>
-
-            <div id="savedFailed" class="topNotifications">
-                Could not update the document.
-            </div>
-            
             <div id="documentContainer">
-                <p id="documentView" align="justify"></p>
+                <div id="documentView" align="justify"></div>
                 <textarea id="editorTextArea" oninput="moveTextToDocument()">${documentText}</textarea>
                 <button id="typesetButton" class="button" onclick="typeset()">Typeset!</button>
                 <button id="saveButton" class="button" onclick="save()">Save!</button>
@@ -62,6 +54,13 @@
                 <input type="text" id="idField" name="documentId"/>
                 <button type="submit">Delete</button>
             </form>
+            <div id ="savedSuccessful" class="topNotifications">
+                The document is updated.
+            </div>
+
+            <div id="savedFailed" class="topNotifications">
+                Could not update the document.
+            </div>
         </div>
 
         <script>

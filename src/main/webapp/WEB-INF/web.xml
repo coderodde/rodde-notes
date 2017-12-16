@@ -3,4 +3,8 @@
     <listener>
         <listener-class>net.coderodde.roddenotes.util.RoddenoteServletContextListener</listener-class>
     </listener>
+    
+    <error-page>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>

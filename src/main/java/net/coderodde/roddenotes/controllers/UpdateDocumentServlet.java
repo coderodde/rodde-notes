@@ -3,6 +3,7 @@ package net.coderodde.roddenotes.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,6 @@ import net.coderodde.roddenotes.config.Config.PAGES;
 import net.coderodde.roddenotes.config.Config.PARAMETERS;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
-import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * This servlet is responsible for updating an existing document. If the
@@ -25,6 +25,19 @@ import org.apache.commons.lang.StringEscapeUtils;
 @WebServlet(name = "UpdateDocumentServlet", urlPatterns = {"/update"})
 public class UpdateDocumentServlet extends HttpServlet {
 
+    /**
+     * The regular expression for the begin script tag.
+     */ 
+    private static final String SCRIPT_TAG_BEGIN_REGEX = "<\\s*script\\s*>";
+    
+    /**
+     * The regular expression for the end script tag.
+     */ 
+    private static final String SCRIPT_TAG_END_REGEX = "<\\s*/\\s*script\\s*>";
+    
+    private static final String SCRIPT_TAG_BEGIN_SUBSTITUTE = "&lt;script&gt;";
+    private static final String SCRIPT_TAG_END_SUBSTITUTE = "&lt;/script&gt;";
+    
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
@@ -74,6 +87,18 @@ public class UpdateDocumentServlet extends HttpServlet {
     }
     
     private String sanitizeText(String text) {
-        return StringEscapeUtils.escapeHtml(text);
+        Pattern patternBeginTag = 
+                Pattern.compile(SCRIPT_TAG_BEGIN_REGEX,
+                                Pattern.CASE_INSENSITIVE);
+        
+        Pattern patternEndTag =
+                Pattern.compile(SCRIPT_TAG_END_REGEX,
+                                Pattern.CASE_INSENSITIVE);
+        
+        text = patternBeginTag.matcher(text)
+                              .replaceAll(SCRIPT_TAG_BEGIN_SUBSTITUTE);
+        
+        return patternEndTag.matcher(text)
+                            .replaceAll(SCRIPT_TAG_END_SUBSTITUTE);
     }
 }
