@@ -18,12 +18,12 @@ import net.coderodde.roddenotes.sql.support.MySQLDataAccessObject;
  * @author Rodion "rodde" Efremov
  * @version 1.6 (Dec 16, 2017)
  */
-@WebServlet(name = "DeleteDocumentServlet", urlPatterns = {"/delete"})
+@WebServlet(name = "DeleteDocumentServlet", urlPatterns = {"/deleteDocument"})
 public class DeleteDocumentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response)
+                          HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
             String documentId = 

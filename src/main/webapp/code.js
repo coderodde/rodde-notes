@@ -102,7 +102,7 @@
                     }
                 };
                 
-                xhr.open("POST", "delete", true);
+                xhr.open("POST", "deleteDocument", true);
                 xhr.setRequestHeader("Content-type", 
                                      "application/x-www-form-urlencoded");
                 xhr.send("documentId=" + documentId + "&editToken=" + editToken);
