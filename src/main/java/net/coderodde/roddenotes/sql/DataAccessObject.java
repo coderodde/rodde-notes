@@ -21,16 +21,12 @@ public interface DataAccessObject {
     public Document createNewDocument() throws SQLException;
     
     /**
-     * Reads a document that has ID {@code id} and edit token {@code editToken}.
+     * Deletes a document with given ID.
      * 
-     * @param id        the ID of the document.
-     * @param editToken the edit token of the document.
-     * @return a document or {@code null} if there is no document with given ID
-     *         and edit token.
+     * @param id the ID of the document to delete.
      * @throws SQLException if the SQL layer fails.
      */
-    public Document getDocument(String id, String editToken) 
-            throws SQLException;
+    public void deleteDocument(String id) throws SQLException;
     
     /**
      * Reads a document with given ID.

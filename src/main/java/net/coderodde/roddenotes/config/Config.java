@@ -127,6 +127,6 @@ public final class Config {
     public static final class STATUS_MESSAGES {
         
         public static final String SUCCESS = "success";
-        public static final String FAILURE = "faiure";
+        public static final String FAILURE = "failure";
     }
 }

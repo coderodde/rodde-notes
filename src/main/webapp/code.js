@@ -42,9 +42,14 @@
                 var xhr = new XMLHttpRequest();
                 
                 xhr.onreadystatechange = function() {
-                    if (this.readystate == 4 && this.status == 200) {
-                        console.log("yeah");
+                    if (this.readyState === 4 && this.status === 200) {
+                        var response = this.responseText;
                         
+                        if (response == "success") {
+                            flashStatusSuccessMessage();
+                        } else if (response == "failure") {
+                            flashStatusFailureMessage();
+                        }
                     }
                 };
                 
@@ -54,5 +59,34 @@
                 xhr.send("documentId=" + documentId +
                          "&editToken=" + editToken + 
                          "&documentText=" + documentText);
+            }
+            
+            function flashStatusSuccessMessage() {
+                $("#savedSuccessful").fadeIn();
+                setTimeout(function() {
+                    $("#savedSuccessful").fadeOut();
+                }, 1500);
+            }
+            
+            function flashStatusFailureMessage() {
+                $("#savedFailed").fadeIn();
+                setTimeout(function() {
+                    $("#savedFailed").fadeOut();
+                }, 1500);
+            }
+            
+            function deleteDocument(documentId, editToken) {
+                alert("delete " + documentId + " " + editToken);
+            }
+            
+            function showDeleteDialogBox() {
+                $("#deleteForm").dialog({
+                    buttons: [
+                        {text: "Delete",
+                         click: deleteDocument,
+                         type: "submit"},
+                        {}
+                    ]
+                });
             }
             

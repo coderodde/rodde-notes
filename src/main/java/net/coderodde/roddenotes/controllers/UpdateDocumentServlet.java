@@ -47,7 +47,7 @@ public class UpdateDocumentServlet extends HttpServlet {
             if (documentId == null 
                     || editToken == null 
                     || documentText == null) {
-                out.println(Config.STATUS_MESSAGES.FAILURE);
+                out.print(Config.STATUS_MESSAGES.FAILURE);
                 return;
             }
             
@@ -66,7 +66,7 @@ public class UpdateDocumentServlet extends HttpServlet {
                     return;
                 }
                 
-                out.println(Config.STATUS_MESSAGES.SUCCESS);
+                out.print(Config.STATUS_MESSAGES.SUCCESS);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }

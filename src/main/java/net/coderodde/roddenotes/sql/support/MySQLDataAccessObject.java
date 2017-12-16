@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import net.coderodde.roddenotes.model.Document;
 import net.coderodde.roddenotes.sql.DataAccessObject;
+import net.coderodde.roddenotes.sql.support.MySQLDefinitions.DELETE;
 import net.coderodde.roddenotes.sql.support.MySQLDefinitions.DOCUMENT_TABLE;
-import net.coderodde.roddenotes.sql.support.MySQLDefinitions.INSERT;
 import net.coderodde.roddenotes.sql.support.MySQLDefinitions.SELECT;
 import net.coderodde.roddenotes.sql.support.MySQLDefinitions.UPDATE;
 import net.coderodde.roddenotes.util.RandomUtilities;
@@ -132,44 +132,6 @@ public final class MySQLDataAccessObject implements DataAccessObject {
             }
         }
     }
-
-    /**
-     * {@inheritDoc } 
-     */
-    @Override
-    public Document getDocument(String id, String editToken) 
-            throws SQLException {
-        try (Connection connection = getConnection()) {
-            try (PreparedStatement statement = 
-                    connection.prepareStatement(MySQLDefinitions
-                                    .SELECT
-                                    .DOCUMENT
-                                    .VIA_DOCUMENT_ID_AND_EDIT_TOKEN)) {
-                statement.setString(1, id);
-                statement.setString(2, editToken);
-                
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (!resultSet.next()) {
-                        return null;
-                    }
-                    
-                    Document document = new Document();
-                    document.setId(
-                            resultSet.getString(DOCUMENT_TABLE.ID_COLUMN.NAME));
-                    
-                    document.setEditToken(
-                            resultSet.getString(
-                                    DOCUMENT_TABLE.EDIT_TOKEN_COLUMN.NAME));
-                    
-                    document.setText(
-                            resultSet.getString(
-                                    DOCUMENT_TABLE.TEXT_COLUMN.NAME));
-                    
-                    return document;
-                }
-            }
-        }
-    }
     
     private Connection getConnection() throws SQLException {
         URI dbUri = null;
@@ -238,5 +200,16 @@ public final class MySQLDataAccessObject implements DataAccessObject {
         }
         
         return true;
+    }
+
+    @Override
+    public void deleteDocument(String id) throws SQLException {
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement statement = 
+                    connection.prepareStatement(DELETE.DOCUMENT)) {
+                statement.setString(1, id);
+                statement.executeUpdate();
+            }
+        }
     }
 }
