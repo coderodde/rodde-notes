@@ -17,7 +17,7 @@
             src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
             integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
             crossorigin="anonymous">
-      
+
         </script>
 
         <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
@@ -38,7 +38,7 @@
                 <textarea id="editorTextArea" oninput="moveTextToDocument()">${documentText}</textarea>
                 <button id="typesetButton" class="button" onclick="typeset()">Typeset!</button>
                 <button id="saveButton" class="button" onclick="save()">Save!</button>
-                <button id="deleteButton" class="button" onclick="showDeleteDialogBox()">Delete!</button>
+                <button id="deleteButton" class="button" onclick="deleteDocument()">Delete!</button>
                 <div id="publishLink">
                     <div id="publishLinkLabel">Non-editable publish link:</div>
                     <div id="publishLinkContent">${publishLink}</div>
@@ -49,7 +49,7 @@
                 <input type="hidden" value="${documentId}" id="documentId" />
                 <input type="hidden" value="${editToken}" id="editToken" />
             </form>
-            
+
             <form id="deleteForm" action="delete" method="post" style="display: none;">
                 <input type="text" id="idField" name="documentId"/>
                 <button type="submit">Delete</button>
@@ -63,7 +63,7 @@
                 Could not update the document.
             </div>
         </div>
-            
+
         <script>
             startTypesettingLoop();
             moveTextToDocument();

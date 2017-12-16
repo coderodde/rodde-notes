@@ -75,18 +75,37 @@
                 }, 1500);
             }
             
-            function deleteDocument(documentId, editToken) {
-                alert("delete " + documentId + " " + editToken);
+            function deleteDocument() {
+                var input = prompt("Confirm current document ID:");
+                
+                var documentId = 
+                        document.getElementById(
+                        RoddeNotes.Parameters.DOCUMENT_ID).value;
+                
+                var editToken =
+                        document.getElementById(
+                        RoddeNotes.Parameters.EDIT_TOKEN).value;
+                
+                if (documentId != input) {
+                    return;
+                }
+                
+                var xhr = new XMLHttpRequest();
+                
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var response = this.responseText;
+                        
+                        if (response == "success") {
+                            window.location = "view?documentId=" + documentId;
+                        }
+                    }
+                };
+                
+                xhr.open("POST", "delete", true);
+                xhr.setRequestHeader("Content-type", 
+                                     "application/x-www-form-urlencoded");
+                xhr.send("documentId=" + documentId + "&editToken=" + editToken);
             }
             
-            function showDeleteDialogBox() {
-                $("#deleteForm").dialog({
-                    buttons: [
-                        {text: "Delete",
-                         click: deleteDocument,
-                         type: "submit"},
-                        {}
-                    ]
-                });
-            }
             
